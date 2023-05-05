@@ -1,6 +1,4 @@
 "use client";
-// import { Signin } from "./components/signin";
-import Link from "next/link";
 
 const qualifications = [
   "Matric / O Levels",
@@ -17,8 +15,6 @@ export default function Home() {
         <h1 className="mb-8 text-center text-lg text-green-800 md:text-3xl">
           Student Course Registration Form{" "}
         </h1>
-        {/* <div className=" "> */}
-        {/* <div> */}
         <label className="text-md mb-6 text-gray-400 md:text-xl">
           {" "}
           Full Name*
@@ -29,8 +25,6 @@ export default function Home() {
           name="name"
           placeholder=" Name"
         />
-        {/* </div> */}
-        {/* <div> */}
         <label className="text-md mb-6 text-gray-400 md:text-xl">Email*</label>
         <input
           type="text"
@@ -38,10 +32,6 @@ export default function Home() {
           name="email"
           placeholder=" Email"
         />
-        {/* </div> */}
-        {/* </div>./ */}
-        {/* <div className="gap-6  md:flex"> */}
-        {/* <div> */}
         <label className="text-md mb-6 text-gray-400 md:text-xl">CNIC *</label>
         <input
           type="cnic"
@@ -49,8 +39,6 @@ export default function Home() {
           name="cnic"
           placeholder=" CNIC"
         />
-        {/* </div> */}
-        {/* <div> */}
         <label className="text-md mb-6 text-gray-400 md:text-xl">
           Phone Number
         </label>
@@ -59,10 +47,7 @@ export default function Home() {
           className="border-rounded-lg text-md mb-4 block w-full rounded border border-gray-400 bg-gray-100 p-3 md:text-xl"
           name="Number"
           placeholder=" Phone Number"
-        />
-        {/* </div> */}
-        {/* </div> */}
-        {/* <div> */}{" "}
+        />{" "}
         <label className="text-md mb-6 text-gray-400 md:text-xl">
           {" "}
           Github profile link
@@ -73,9 +58,6 @@ export default function Home() {
           name="github"
           placeholder=" github link"
         />
-        {/* </div> */}
-        {/* <div className="gap-6  md:flex"> */}
-        {/* <div> */}
         <label className=" text-md mb-6 text-gray-400 md:text-xl">
           Enter City*
         </label>
@@ -85,60 +67,50 @@ export default function Home() {
           name="city"
           placeholder=" City"
         />
-        {/* </div> */}
-        {/* <div className="mt-12"> */}
         <label className="text-md mb-12 text-gray-400 md:text-xl">
           {" "}
           Add Work Experience
         </label>
-        {/* <h1 className="text-2xl">
-                Add <button>+</button>
-              </h1> */}
-        {/* </div> */}
-        {/* </div> */}
-        <div className="gap-12  md:flex">
-          <div>
-            <label className="text-md mb-8 text-gray-400 md:text-xl">
+        <button className="mb-4 block text-2xl">Add</button>
+        <label className="text-md mb-8 text-gray-400 md:text-xl">
+          {" "}
+          Gender*
+        </label>
+        <div className="mb-4 flex justify-center gap-20 text-xl">
+          <div className="flex items-center  ">
+            <input
+              id="default-radio-1"
+              type="radio"
+              value=""
+              name="default-radio"
+              className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            />
+            <label
+              htmlFor="default-radio-1"
+              className="ml-2 text-2xl font-medium text-gray-900 dark:text-gray-300"
+            >
               {" "}
-              Gender*
+              Male
             </label>
-            <div className="bdr flex gap-20 text-xl">
-              <div className="bdr2 flex items-center  ">
-                <input
-                  id="default-radio-1"
-                  type="radio"
-                  value=""
-                  name="default-radio"
-                  className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                />
-                <label
-                  htmlFor="default-radio-1"
-                  className="ml-2 text-2xl font-medium text-gray-900 dark:text-gray-300"
-                >
-                  {" "}
-                  Male
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="default-radio-2"
-                  type="radio"
-                  value=""
-                  name="default-radio"
-                  className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                />
-                <label
-                  htmlFor="default-radio-2"
-                  className="ml-2 text-2xl font-medium text-gray-900 dark:text-gray-300"
-                >
-                  {" "}
-                  Female
-                </label>
-              </div>
-            </div>
           </div>
-          <div></div>
+          <div className="flex items-center">
+            <input
+              id="default-radio-2"
+              type="radio"
+              value=""
+              name="default-radio"
+              className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            />
+            <label
+              htmlFor="default-radio-2"
+              className="ml-2 text-2xl font-medium text-gray-900 dark:text-gray-300"
+            >
+              {" "}
+              Female
+            </label>
+          </div>
         </div>
+        {/* </div> */}
         <label
           htmlFor="qualification"
           className=" text-md mb-6 text-gray-400 md:text-xl"
@@ -148,7 +120,7 @@ export default function Home() {
         <select
           id="qualification"
           name="qualification"
-          className="mb-8 block w-full border border-gray-400 bg-gray-200 p-3  md:text-lg"
+          className="mb-8 block w-full border border-gray-400 bg-gray-100 p-3  md:text-lg"
           required
         >
           {qualifications.map((item, i) => (
@@ -166,7 +138,6 @@ export default function Home() {
           </button>
         </div>
       </form>
-      {/* </div> */}
     </main>
   );
 }
