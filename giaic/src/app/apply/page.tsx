@@ -41,19 +41,24 @@ const defaultValues: IApplyForm = {
 };
 
 export default function Page() {
-  const [experience, setExperience] = useState();
-  const [projects, setProjects] = useState();
+  const [experience, setExperience] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   const {
     register,
     handleSubmit,
     // watch,
-    formState: { errors },
+
+    formState,
   } = useForm<IApplyForm>({
     defaultValues: {
       city: "Karachi",
     },
+    mode: "onTouched",
   });
+
+  const { errors, isValid, isSubmitting } = formState;
+  console.log("🚀 ~ file: page.tsx:60 ~ Page ~ isValid:", isValid);
 
   const onFormSubmit = (data: IApplyForm) => {
     console.log(data);
@@ -89,7 +94,11 @@ export default function Page() {
             </option>
           ))}
         </select>
-        <button type="submit">submit</button>
+
+        {/* validation is only allow form subbmission when form is valid and isSubmitting for not resubmitting form */}
+        <button disabled={!isValid || isSubmitting} type="submit">
+          submit
+        </button>
       </form>
     </section>
   );
