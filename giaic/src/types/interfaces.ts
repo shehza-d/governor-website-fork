@@ -5,14 +5,6 @@ interface IProjects {
   description?: string;
 }
 
-interface ILanguage {
-  name: string;
-  level:
-    | "basic elementary proficiency"
-    | "limited working proficiency"
-    | "professional working proficiency"
-    | "native or bilingual proficiency";
-}
 interface IExperience {
   title: string;
   employmentType:
@@ -32,7 +24,8 @@ interface IExperience {
 }
 
 export interface IApplyForm {
-  username: string;
+  fullName: string;
+  CNIC: string;
   phoneNumber: string;
   city: string;
   email: string;
@@ -50,13 +43,11 @@ export interface IApplyForm {
   experiences?: IExperience[];
   programmingLanguages?: string[];
   programmingProjects?: IProjects[];
-
-  languages: ILanguage[];
 }
 
-export interface ILogin {
-  fullName: string;
-  CNIC: string;
-  email: string;
-  password: string;
-}
+// export interface ISignup {
+//   fullName: string;
+//   CNIC: string;
+//   email: string;
+//   password: string;
+// }
