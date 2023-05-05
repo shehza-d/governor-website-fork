@@ -25,7 +25,7 @@ interface IExperience {
 
 export interface IApplyForm {
   fullName: string;
-  CNIC: string;
+  cnic: string;
   phoneNumber: string;
   city: string;
   email: string;
@@ -44,6 +44,21 @@ export interface IApplyForm {
   programmingLanguages?: string[];
   programmingProjects?: IProjects[];
 }
+
+export type TFields =
+  | "fullName"
+  | "cnic"
+  | "phoneNumber"
+  | "city"
+  | "email"
+  | "gender"
+  | "highestQualification"
+  | "github"
+  | "linkedin"
+  | "discord"
+  | "experiences"
+  | "programmingLanguages"
+  | "programmingProjects";
 
 // export interface ISignup {
 //   fullName: string;

@@ -1,9 +1,12 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { IApplyForm } from "@/types/interfaces";
+import { IApplyForm, TFields } from "@/types/interfaces";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { Button, useDisclosure, useToast } from "@chakra-ui/react";
+// import ExperienceModal from "@/components/ExperienceModal";
+import { schema } from "@/lib/yupValidation";
+// import CheckBox from "@/components/CheckBox";
 
 const qualifications = [
   "Matric / O Levels",
@@ -13,277 +16,248 @@ const qualifications = [
   "Post-Graduate (PhD)",
 ];
 
-const defaultValues: IApplyForm = {
-  fullName: "Shehzad",
-  CNIC: "4220144338283478",
-  phoneNumber: "03033111499",
-  city: "karachi",
-  email: "shehzad.dev@pm.me",
-  gender: "male",
-  highestQualification: "Intermediate / A Levels",
-  github: "string",
-  linkedin: "string",
-  discord: "string",
-  experiences: [],
-  programmingLanguages: ["js", "ts"],
-  programmingProjects: [
-    {
-      title: "string",
-      repoLink: "string",
-      hostedLink: "string",
-      description: "string",
-    },
-    {
-      title: "string",
-      repoLink: "string",
-      hostedLink: "string",
-      description: "string",
-    },
-  ],
-};
-
-const schema = yup
-  .object({
-    fullName: yup.string().required("Full Name is required").min(3).max(40),
-    phoneNumber: yup
-      .string()
-      .required("Phone Number is required")
-      .min(10, "Please enter more then 10 characters ")
-      .max(15, "Please enter within 15 characters "),
-    email: yup
-      .string()
-      .email("Email is not valid")
-      .required("Email is required")
-      .min(3)
-      .max(45, "Please enter within 25 characters"),
-    CNIC: yup.string().required("CNIC Number is required").min(10).max(50),
-    // {
-    // age: yup
-    //   .number("Enter age in number")
-    //   .required("Age is required")
-    //   .min(13, "User can't be younger then 13")
-    //   .max(35, "User can't be older then 35")
-    //   .positive("Age can't be negative")
-    //   .integer("Enter age without decimal"),
-    // address: yup
-    //   .string("Enter your address")
-    //   .required("address is required")
-    //   .min(3, "Please enter more then 3 characters ")
-    //   .max(40, "Please enter within 40 characters "),
-
-    // name: yup
-    //   .string("Enter your name")
-    //   .required("Name is required")
-    //   .min(4, "Please enter more then 4 characters ")
-    //   .max(15, "Please enter within 15 characters "),
-    // // .integer("Enter age without decimal")
-
-    // websiteURL: yup
-    //   .string()
-    //   .url("Only enter Website URL")
-    //   .max(40, "Website URL can't be more then 40"),
-
-    //
-  })
-  .required();
-
 export default function Page() {
+  const modal1 = useDisclosure();
+  const toast = useToast();
+
   const [experience, setExperience] = useState([]);
+  // const [experience, setExperience] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    // watch,
+  console.log("rerender");
 
-    formState,
-  } = useForm<IApplyForm>({
-    defaultValues: {
-      city: "Karachi",
-    },
+  const { register, handleSubmit, formState } = useForm<IApplyForm>({
+    defaultValues: { city: "Karachi" },
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
 
   const { errors, isValid, isSubmitting } = formState;
-  console.log("🚀 ~ file: page.tsx:109 ~ Page ~ errors:", errors);
 
-  const onFormSubmit = (data: IApplyForm) => {
-    console.log("data", data);
+  const onFormSubmit = async (data: IApplyForm) => {
+    try {
+      setLoading(true);
+      console.log("data", data);
+      // const res = await fetch("/api/applyform/", {
+      //   // body:{},
+      //   method: "",
+      // });
+
+      toast({
+        title: "Applied Successfully.",
+        description: "We've created your account for you.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } catch (err: any) {
+      console.log(err);
+      toast({
+        title: `Unknown error`,
+        description: `${err?.message}`,
+        status: "error",
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // <form onSubmit={handleSubmit(onFormSubmit)} noValidate>
-  //   <br />
-  //   <input type="text" placeholder="Full Name" {...register("fullName")} />
-  //   <div className="red">{`${errors.fullName?.message}`}</div>
-  //   <br />
+  function CheckBox({ value }: { value: string }) {
+    return (
+      <div className="mb-2 flex items-center">
+        <input
+          id={value}
+          type="checkbox"
+          value={value.toLowerCase()}
+          {...register("programmingLanguages", { required: true })}
+          className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+        />
+        <label
+          htmlFor={value}
+          className="text-md ml-2 font-medium text-gray-900 dark:text-gray-300"
+        >
+          {" "}
+          {value}
+        </label>
+      </div>
+    );
+  }
 
-  //   <input
-  //     type="email"
-  //     placeholder="Email address"
-  //     {...register("email")}
-  //   />
-  //   <br />
-
-  //   <input
-  //     type="number"
-  //     placeholder="Phone number"
-  //     {...register("phoneNumber")}
-  //   />
-  //   <br />
-
-  //   <input type="number" placeholder="NIC number" {...register("CNIC")} />
-
-  //   <select
-  //     id="qualification"
-  //     name="qualification"
-  //     className="roundhighestQualificationed-lg mb-8 block w-full border border-gray-400 bg-gray-200 p-3  md:text-lg"
-  //     required
-  //   >
-  //     {qualifications.map((item, i) => (
-  //       <option key={i} value={item}>
-  //         {item}
-  //       </option>
-  //     ))}
-  //   </select>
-
-  //   {/* validation is only allow form subbmission when form is valid and isSubmitting for not resubmitting form */}
-  //   <button
-  //     disabled={!isValid || isSubmitting}
-  //     type="submit"
-  //   >
-  //     submit
-  //   </button>
-  // </form>
-  // sdsd
+  const Input = ({
+    id,
+    placeholder,
+    type,
+    required,
+  }: {
+    id: TFields;
+    placeholder: string;
+    type: "text" | "number" | "email";
+    required?: boolean;
+  }) => {
+    return (
+      <>
+        {" "}
+        <label
+          htmlFor={id}
+          className="text-md mb-6 mt-4 text-gray-400 md:text-xl"
+        >
+          {" "}
+          {placeholder} {required ? "*" : "(optional)"}
+        </label>
+        <input
+          type={type}
+          id={id}
+          className="border-rounded-lg text-md mb-2 mt-2 block w-full rounded border border-gray-400 bg-gray-100 p-3 md:text-xl"
+          placeholder={` ${placeholder}`}
+          {...register(id)}
+        />
+        {errors?.[id] && (
+          <p className="mb-4 text-red-400">{errors?.[id]?.message}</p>
+        )}
+      </>
+    );
+  };
 
   return (
     <main className="flex justify-center">
-      <form className="container mx-4 my-10 w-full max-w-2xl rounded bg-white px-4 py-8 text-black shadow-lg md:mx-10 md:px-6">
-        <h1 className="mb-8 text-center text-lg text-green-800 md:text-3xl">
+      <form
+        onSubmit={handleSubmit(onFormSubmit)}
+        noValidate
+        className="container mx-4 my-10 w-full max-w-2xl rounded bg-white px-4 py-8 text-black shadow-lg md:mx-10 md:px-6"
+      >
+        <h1 className="mb-8 text-center text-lg font-bold text-green-800 md:text-3xl">
           Student Course Registration Form{" "}
         </h1>
-        <label className="text-md mb-6 text-gray-400 md:text-xl">
-          {" "}
-          Full Name*
-        </label>
-        <input
-          type="text"
-          className="border-rounded-lg text-md mb-4 block w-full rounded border border-gray-400 bg-gray-100 p-3 md:text-xl"
-          name="name"
-          placeholder=" Name"
-        />
-        <label className="text-md mb-6 text-gray-400 md:text-xl">Email*</label>
-        <input
-          type="text"
-          className="border-rounded-lg text-md mb-4 block w-full rounded border border-gray-400 bg-gray-100 p-3 md:text-xl"
-          name="email"
-          placeholder=" Email"
-        />
-        <label className="text-md mb-6 text-gray-400 md:text-xl">CNIC *</label>
-        <input
-          type="cnic"
-          className="border-rounded-lg text-md text-md mb-4 block w-full rounded border border-gray-400 bg-gray-100 p-3 md:text-xl"
-          name="cnic"
-          placeholder=" CNIC"
-        />
-        <label className="text-md mb-6 text-gray-400 md:text-xl">
-          Phone Number
-        </label>
-        <input
+        <Input type="text" id="fullName" placeholder="Name" required={true} />
+        <Input type="number" id="cnic" placeholder="CNIC" required={true} />
+        <Input
           type="number"
-          className="border-rounded-lg text-md mb-4 block w-full rounded border border-gray-400 bg-gray-100 p-3 md:text-xl"
-          name="Number"
-          placeholder=" Phone Number"
-        />{" "}
-        <label className="text-md mb-6 text-gray-400 md:text-xl">
-          {" "}
-          Github profile link
-        </label>
-        <input
-          type="text"
-          className="border-rounded-lg mb-4 block w-full rounded border border-gray-400 bg-gray-100 p-3 text-sm md:text-xl"
-          name="github"
-          placeholder=" github link"
+          id="phoneNumber"
+          placeholder="Phone Number"
+          required={true}
         />
-        <label className=" text-md mb-6 text-gray-400 md:text-xl">
-          Enter City*
-        </label>
-        <input
-          type="text"
-          className="border-rounded-lg mb-4 block w-full rounded border border-gray-400 bg-gray-100 p-3 text-sm md:text-xl"
-          name="city"
-          placeholder=" City"
-        />
-        <label className="text-md mb-12 text-gray-400 md:text-xl">
+        <Input type="text" id="city" placeholder="City" required={true} />
+        <Input type="email" id="email" placeholder="Email" required={true} />
+        <label className="text-md mb-8 mt-4 text-gray-400 md:text-xl">
           {" "}
-          Add Work Experience
-        </label>
-        <button className="mb-4 block text-2xl">Add</button>
-        <label className="text-md mb-8 text-gray-400 md:text-xl">
-          {" "}
-          Gender*
+          Gender *
         </label>
         <div className="mb-4 flex justify-center gap-20 text-xl">
           <div className="flex items-center  ">
             <input
-              id="default-radio-1"
+              {...register("gender", { required: true })}
               type="radio"
-              value=""
-              name="default-radio"
+              value="male"
               className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             />
-            <label
-              htmlFor="default-radio-1"
-              className="ml-2 text-2xl font-medium text-gray-900 dark:text-gray-300"
-            >
+            <label className="ml-2 text-2xl font-medium text-gray-900 dark:text-gray-300">
               {" "}
               Male
             </label>
           </div>
           <div className="flex items-center">
             <input
-              id="default-radio-2"
+              {...register("gender", { required: true })}
               type="radio"
-              value=""
-              name="default-radio"
+              value="female"
               className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             />
-            <label
-              htmlFor="default-radio-2"
-              className="ml-2 text-2xl font-medium text-gray-900 dark:text-gray-300"
-            >
+            <label className="ml-2 text-2xl font-medium text-gray-900 dark:text-gray-300">
               {" "}
               Female
             </label>
           </div>
         </div>
-        {/* </div> */}
+        {errors.gender && (
+          <p className="mb-4 text-red-400">{errors.gender?.message}</p>
+        )}
         <label
           htmlFor="qualification"
-          className=" text-md mb-6 text-gray-400 md:text-xl"
+          className=" text-md mb-6 mt-4 text-gray-400 md:text-xl"
         >
           Highest Qualification *
         </label>
+
         <select
+          {...register("highestQualification", { required: true })}
           id="qualification"
-          name="qualification"
           className="mb-8 block w-full border border-gray-400 bg-gray-100 p-3  md:text-lg"
           required
         >
+          <option value="null">Please Select</option>
           {qualifications.map((item, i) => (
             <option key={i} value={item}>
               {item}
             </option>
           ))}
         </select>
+        {errors.highestQualification && (
+          <p className="mb-4 text-red-400">
+            {errors.highestQualification?.message}
+          </p>
+        )}
+        <Input type="text" id="github" placeholder="Github link" />
+        <Input type="text" id="linkedin" placeholder="Linkedin link" />
+        <Input type="text" id="discord" placeholder="Discord link" />
+
+        <label className="text-md mb-4 block text-gray-400 md:text-xl">
+          {" "}
+          Experience (optional)
+        </label>
+        <button
+          type="button"
+          onClick={modal1.onOpen}
+          className="mb-2 w-full rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
+        >
+          Add Work Experience
+        </button>
+        {/* <ExperienceModal state={modal1} /> */}
+        <label className="text-md mb-4 block text-gray-400 md:text-xl">
+          Programming Languages (optional)
+        </label>
+        <CheckBox value="JavaScript" />
+        <CheckBox value="TypeScript" />
+        <CheckBox value="Python" />
+        <CheckBox value="C#" />
+        <CheckBox value="Swift" />
+        <CheckBox value="C/C++" />
+        <CheckBox value="Java" />
+        <CheckBox value="Solidity" />
+        <CheckBox value="Other" />
+
+        {/* </div> */}
+
+        <label className="text-md mb-4 block text-gray-400 md:text-xl">
+          {" "}
+          Programming projects (optional)
+        </label>
+        <button
+          type="button"
+          className="mb-2 w-full rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
+        >
+          Add Programming projects Experience
+        </button>
+
         <div className="flex w-full justify-center">
-          <button
+          {/* validation is only allow form submission when form is valid and isSubmitting for not resubmitting form */}
+          {/* <button
+            // disabled={!isValid || isSubmitting}
             type="submit"
-            className="mb-8 w-36 justify-center rounded-full border border-gray-700 bg-blue-700 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 md:w-52 md:text-xl"
+            className="mb-8 mt-8 w-36 justify-center rounded-full border border-gray-700 bg-blue-700 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 md:w-52 md:text-xl"
           >
             Apply Now
-          </button>
+          </button>  */}
+          <Button
+            type="submit"
+            isLoading={loading}
+            loadingText="Applying"
+            colorScheme="telegram"
+            variant="solid"
+          >
+            Apply Now
+          </Button>
         </div>
       </form>
     </main>
