@@ -3,9 +3,11 @@ export interface IProjects {
   repoLink: string;
   hostedLink?: string;
   description?: string;
+  // id: string;
 }
 
 export interface IExperience {
+  // id: string;
   title: string;
   employmentType:
     | "Full-time"
@@ -18,9 +20,9 @@ export interface IExperience {
     | "Seasonal";
   industry: string;
   companyName: string;
-  startDate: string;
-  endDate: string;
-  currentlyWorking: boolean;
+  startDate: Date;
+  endDate: Date;
+  // currentlyWorking: boolean;
 }
 
 export interface IApplyForm {
@@ -29,6 +31,7 @@ export interface IApplyForm {
   phoneNumber: string;
   city: string;
   email: string;
+  dateOfBirth: Date;
   gender: "male" | "female";
   highestQualification:
     | "Matric / O Levels"
@@ -51,6 +54,7 @@ export type TFields =
   | "phoneNumber"
   | "city"
   | "email"
+  | "dateOfBirth"
   | "gender"
   | "highestQualification"
   | "github"
@@ -58,7 +62,18 @@ export type TFields =
   | "discord"
   | "experiences"
   | "programmingLanguages"
-  | "programmingProjects";
+  | "programmingProjects"
+  | "title"
+  | "employmentType"
+  | "industry"
+  | "companyName"
+  | "startDate"
+  | "endDate"
+  | "currentlyWorking"
+  | "title"
+  | "repoLink"
+  | "hostedLink"
+  | "description";
 
 // export interface ISignup {
 //   fullName: string;
