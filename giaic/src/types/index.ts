@@ -1,13 +1,15 @@
+// export interface MyFormUnion extends IApplyForm, IExperience, IProjects {}
+
 export interface IProjects {
   title: string;
   repoLink: string;
   hostedLink?: string;
   description?: string;
-  // id: string;
+  id: string;
 }
 
 export interface IExperience {
-  // id: string;
+  id: string;
   title: string;
   employmentType:
     | "Full-time"
@@ -20,9 +22,8 @@ export interface IExperience {
     | "Seasonal";
   industry: string;
   companyName: string;
-  startDate: Date;
-  endDate: Date;
-  // currentlyWorking: boolean;
+  startDate: string;
+  endDate: string;
 }
 
 export interface IApplyForm {
@@ -31,8 +32,8 @@ export interface IApplyForm {
   phoneNumber: string;
   city: string;
   email: string;
-  dateOfBirth: Date;
   gender: "male" | "female";
+  dateOfBirth: string;
   highestQualification:
     | "Matric / O Levels"
     | "Intermediate / A Levels"

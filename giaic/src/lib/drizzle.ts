@@ -19,6 +19,7 @@ export const UsersTable = pgTable("applied_users", {
   city: text("city").notNull(),
   email: text("email").notNull(),
   gender: text("gender").notNull(),
+  dateOfBirth: date("birth_date").notNull(),
   highestQualification: text("highest_qualification").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -28,9 +29,6 @@ export const UsersTable = pgTable("applied_users", {
   programmingLanguages: text("programming_languages"),
 });
 
-// serial("user_id")
-//     .references(() => UsersTable.id)
-//     .notNull(),
 export const ExperiencesTable = pgTable("experiences", {
   id: serial("id").primaryKey(),
   userId: serial("user_id")
@@ -42,7 +40,6 @@ export const ExperiencesTable = pgTable("experiences", {
   companyName: varchar("company_name").notNull(),
   startDate: date("start_date").notNull(),
   endDate: date("end_date"),
-  currentlyWorking: boolean("currently_working").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
