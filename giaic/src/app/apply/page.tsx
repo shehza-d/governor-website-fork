@@ -1,12 +1,24 @@
 "use client";
+import {
+  ExperienceModal,
+  CheckBox,
+  Input,
+  ProjectsModal,
+  Loader,
+} from "@/components";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ExperienceModal, CheckBox, Input, ProjectsModal } from "@/components";
 import { IApplyForm, IExperience, IProjects } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { mainFormSchema } from "@/lib/yupValidation";
 import { formCities, formQualifications } from "@/data";
-import { Button, useToast } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  weight: ["300", "400", "500", "800", "900"],
+  subsets: ["latin"],
+});
 
 export default function Page() {
   const toast = useToast();
@@ -17,7 +29,7 @@ export default function Page() {
   const [projectModal, setProjectModal] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit, formState } = useForm<IApplyForm>({
+  const { register, handleSubmit, reset, formState } = useForm<IApplyForm>({
     mode: "onTouched",
     resolver: yupResolver(mainFormSchema),
   });
@@ -29,6 +41,7 @@ export default function Page() {
       setLoading(true);
       const formData = {
         fullName: data.fullName.toLowerCase(),
+        fatherName: data.fatherName.toLowerCase(),
         cnic: data.cnic,
         phoneNumber: data.phoneNumber,
         city: data.city.toLowerCase(),
@@ -45,15 +58,21 @@ export default function Page() {
           : null,
         programmingProjects: projectsData.length ? projectsData : null,
       };
-      // console.log("formData", formData);
+      console.log("formData", formData);
 
-      const res = await fetch("/api/applyform/", {
-        body: JSON.stringify(formData),
-        method: "POST",
-      });
+      const sleep = () => new Promise((resolve) => setTimeout(resolve, 2500));
+      await sleep();
 
-      const resData = await res.json();
+      // const res = await fetch("/api/applyform/", {
+      //   body: JSON.stringify(formData),
+      //   method: "POST",
+      // });
+
+      // const resData = await res.json();
+      const resData = { message: "Form testing done!" };
       // console.log(resData.message);
+
+      if (resData.message === "Applied Succesfully") reset();
 
       toast({
         title: `${resData.message}`,
@@ -81,23 +100,32 @@ export default function Page() {
 
   return (
     <main
-      style={{
-        backgroundImage: `url('/formBg.png')`,
-      }}
+      // style={{ backgroundImage: `url('/formBg.png')` }}
       className="overfow-hidden mb-20 flex justify-center bg-contain bg-fixed bg-center bg-no-repeat"
     >
       <form
-        className=" -top-10 z-10 mx-4 my-10 w-full max-w-2xl rounded bg-opacity-30 px-4 py-8 text-black shadow-lg backdrop-blur-3xl md:mx-10 md:px-6"
+        className="-top-10 z-10 mx-4 my-10 w-full max-w-2xl rounded bg-opacity-30 px-4 py-8 text-black shadow-lg backdrop-blur-3xl md:mx-10 md:px-6"
         onSubmit={handleSubmit(onFormSubmit)}
         noValidate
       >
-        <h1 className="mb-8 text-center text-3xl font-bold  text-main md:text-lg">
+        <h1
+          style={poppins.style}
+          className="mb-8 text-center text-3xl font-bold  text-main md:text-lg"
+        >
           Student Course Registration Form{" "}
         </h1>
         <Input
           type="text"
           id="fullName"
           placeholder="Full Name"
+          required={true}
+          register={register}
+          errors={errors}
+        />
+        <Input
+          type="text"
+          id="fatherName"
+          placeholder="Father Name"
           required={true}
           register={register}
           errors={errors}
@@ -125,7 +153,11 @@ export default function Page() {
         <select
           {...register("city", { required: true })}
           id="city"
-          className="mb-2 mt-2 block w-full rounded border border-gray-400 bg-gray-100 p-3  md:text-lg"
+          className={`mb-2 mt-2 block w-full rounded border border-gray-400 bg-gray-100 p-3 md:text-lg ${
+            errors?.city
+              ? "border-red-400 ring-red-500"
+              : "focus:border-sub focus:ring-sub"
+          } outline-none focus:ring-1`}
           required
         >
           <option value="n">Please Select</option>
@@ -297,7 +329,7 @@ export default function Page() {
         </button>
 
         <div className="space-y-2">
-          {projectsData.map((item, i) => (
+          {projectsData.map((item) => (
             <div
               className="flex items-center justify-between rounded-md border-2 border-gray-500 p-2"
               key={item.id}
@@ -321,17 +353,25 @@ export default function Page() {
         </div>
 
         <div className="flex w-full justify-center">
-          <Button
+          {/* <Button
             // disabled={!isValid || isSubmitting}
             type="submit"
-            className="text_shadow rounded_none mt-5 w-52 bg-sub py-4 text-center text-base font-semibold tracking-widest text-white transition-transform duration-1000 hover:scale-105 sm:w-36 sm:py-3 sm:text-sm"
+            className="rounded_none mt-5 h-3 w-52 bg-sub p-4 text-center text-base font-semibold tracking-widest text-white transition-transform duration-1000 hover:scale-105 sm:w-full sm:py-3 sm:text-sm"
             isLoading={loading}
             loadingText="Applying"
             colorScheme="bg-main"
             variant="solid"
           >
             SUBMIT
-          </Button>
+          </Button> */}
+          <button
+            type="submit"
+            style={poppins.style}
+            disabled={loading}
+            className="mt-5 w-52 bg-sub py-4 text-center text-base font-semibold tracking-widest text-white transition-all hover:translate-y-1 disabled:opacity-60 disabled:hover:cursor-not-allowed sm:w-full sm:py-3 sm:text-sm"
+          >
+            {loading ? <Loader width="w-4" height="h-4" /> : "SUBMIT"}
+          </button>
         </div>
       </form>
 

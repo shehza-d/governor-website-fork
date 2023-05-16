@@ -6,6 +6,11 @@ export const mainFormSchema = yup.object({
     .required("Name is required")
     .min(3, "Please enter more then 3 characters")
     .max(100, "Please enter within 100 characters"),
+  fatherName: yup
+    .string()
+    .required("Name is required")
+    .min(3, "Please enter more then 3 characters")
+    .max(100, "Please enter within 100 characters"),
   cnic: yup
     .string()
     .required("CNIC Number is required  without -")
@@ -14,8 +19,8 @@ export const mainFormSchema = yup.object({
   phoneNumber: yup
     .string()
     .required("Phone Number is required")
-    .min(10, "Please enter more then 10 characters")
-    .max(16, "Please enter within 16 characters"),
+    .min(11, "Please enter more then 11 characters")
+    .max(14, "Please enter within 14 characters"),
   city: yup
     .string()
     .required("City is required")
@@ -26,7 +31,7 @@ export const mainFormSchema = yup.object({
     .email("Email is not valid")
     .required("Email is required")
     .min(3, "Please enter more then 3 characters")
-    .max(45, "Please enter within 45 characters"),
+    .max(55, "Please enter within 55 characters"),
   dateOfBirth: yup.string().required("Date of Birth if Required"),
   gender: yup.string().required("Gender is required"),
   highestQualification: yup
@@ -68,7 +73,7 @@ export const experienceSchema = yup.object({
     .required("Industry is required")
     .min(3, "Please enter more then 3 characters")
     .max(40, "Please enter within 40 characters"),
-  startDate: yup.string().required("Date is Required"),
+  // startDate: yup.string().required("Date is Required"),
   // endDate: yup.date().typeError("Date is Required"),
 });
 
